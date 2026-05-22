@@ -22,7 +22,9 @@ interface ResponsiveTablePanelProps<T extends string> {
   onTabChange: (tab: T) => void;
   source: MetricSource;
   ariaLabel: string;
-  tables: Record<T, TablePanelConfig<unknown>>;
+  /** Each tab may use a different row type */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tables: Record<T, TablePanelConfig<any>>;
 }
 
 export function ResponsiveTablePanel<T extends string>({
@@ -53,7 +55,7 @@ export function ResponsiveTablePanel<T extends string>({
 
   const columnPicker = (
     <TableColumnPicker
-      hiddenColumns={hiddenColumns as SortableColumn<unknown>[]}
+      hiddenColumns={hiddenColumns as SortableColumn<any>[]}
       onShowColumn={showColumn}
     />
   );
