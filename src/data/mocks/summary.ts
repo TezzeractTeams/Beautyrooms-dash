@@ -13,7 +13,7 @@ export const mockSummaryKpis: KpiColumn[] = [
     source: "hubspot",
     metrics: [
       { label: "Leads", value: "186" },
-      { label: "C.P.L", value: "$22.63" },
+      { label: "Cost per Lead", value: "$22.63" },
     ],
   },
   {
@@ -33,7 +33,7 @@ export const mockSummaryKpis: KpiColumn[] = [
   {
     source: "boulevard",
     metrics: [
-      { label: "Conv.", value: "47" },
+      { label: "convertions", value: "47" },
       { label: "Av. C.P.C", value: "$1.94" },
     ],
   },

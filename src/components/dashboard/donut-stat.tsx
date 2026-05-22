@@ -7,7 +7,7 @@ interface DonutStatProps {
 
 const VIEWBOX = 100;
 const RADIUS = 42;
-const STROKE = 11;
+const STROKE = 7;
 const NORMALIZED_RADIUS = RADIUS - STROKE / 2;
 const CIRCUMFERENCE = 2 * Math.PI * NORMALIZED_RADIUS;
 
@@ -52,7 +52,7 @@ export function DonutStat({
             fill="none"
             stroke="hsl(var(--primary))"
             strokeWidth={STROKE}
-            strokeLinecap="round"
+            strokeLinecap="butt"
             strokeDasharray={`${filled} ${gap}`}
             transform={`rotate(-90 ${VIEWBOX / 2} ${VIEWBOX / 2})`}
           />

@@ -50,7 +50,7 @@ export function MockLineChart({ points, height = 140 }: MockLineChartProps) {
             key={c.label}
             cx={c.x}
             cy={c.y}
-            r="1.5"
+            r="0.4"
             fill="hsl(var(--warm-brown))"
           />
         ))}
