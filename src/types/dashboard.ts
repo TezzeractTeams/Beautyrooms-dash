@@ -1,65 +1,176 @@
-/** Data providers — swap mock implementations for API clients later */
-export type DataSource = "hubspot" | "meta" | "google" | "boulevard";
+/** Filter platforms — Boulevard reserved for future API */
+export type Platform = "all" | "meta" | "google" | "boulevard";
 
-export interface KpiMetric {
-  label: string;
-  value: string;
+export type DateRangePreset = "today" | "7d" | "30d" | "90d" | "custom";
+
+export interface DateRange {
+  preset: DateRangePreset;
+  start?: string;
+  end?: string;
 }
 
-export interface KpiColumn {
-  metrics: KpiMetric[];
-  source?: DataSource;
+export type TrendDirection = "up" | "down" | "neutral";
+
+export type CampaignStatus = "active" | "paused" | "ended";
+
+export type MetricSource = "meta" | "google" | "combined" | "hubspot" | "boulevard";
+
+export type KpiValueFormat = "currency" | "currencyDecimal" | "number" | "percent";
+
+export interface KpiMetric {
+  id: string;
+  label: string;
+  value: string;
+  rawValue: number;
+  format: KpiValueFormat;
+  trendPercent: number;
+  trendDirection: TrendDirection;
+  source: MetricSource;
 }
 
 export interface LeadStage {
+  id: "mql" | "sql" | "booked";
   label: string;
-  value: number;
-  percentage: number;
+  count: number;
+  percentOfTop: number;
+  dropOffFromPrevious: number | null;
 }
 
-export interface ChartPoint {
-  label: string;
-  value: number;
+export interface LeadsFunnelData {
+  stages: LeadStage[];
+  source: "hubspot";
 }
 
-export interface TabbedListItem {
+export interface MetaChartPoint {
+  date: string;
+  cost: number;
+  cpm: number;
+}
+
+export interface GoogleChartPoint {
+  date: string;
+  cost: number;
+  impressions: number;
+  clicks: number;
+}
+
+export interface MetaCampaignRow {
   id: string;
   name: string;
+  status: CampaignStatus;
+  budget: string;
   spend: string;
-  performance: string;
+  impressions: number;
+  clicks: number;
+  ctr: string;
+  cpc: string;
+  conversions: number;
+  roas: string;
 }
 
-export type TabKey = "campaigns" | "ads" | "adGroups";
+export interface MetaAdSetRow {
+  id: string;
+  campaignName: string;
+  name: string;
+  status: CampaignStatus;
+  budget: string;
+  spend: string;
+  impressions: number;
+  clicks: number;
+  ctr: string;
+  cpc: string;
+  conversions: number;
+  roas: string;
+}
 
-export interface TabbedListData {
-  campaigns: TabbedListItem[];
-  ads: TabbedListItem[];
-  adGroups: TabbedListItem[];
+export interface MetaAdRow {
+  id: string;
+  campaignName: string;
+  adSetName: string;
+  name: string;
+  status: CampaignStatus;
+  budget: string;
+  spend: string;
+  impressions: number;
+  clicks: number;
+  ctr: string;
+  cpc: string;
+  conversions: number;
+  roas: string;
+}
+
+export interface GoogleCampaignRow {
+  id: string;
+  name: string;
+  status: CampaignStatus;
+  budget: string;
+  impressions: number;
+  clicks: number;
+  ctr: string;
+  avgCpc: string;
+  conversions: number;
+  costPerConversion: string;
+  impressionShare: string;
+}
+
+export interface GoogleAdRow {
+  id: string;
+  campaignName: string;
+  name: string;
+  status: CampaignStatus;
+  budget: string;
+  impressions: number;
+  clicks: number;
+  ctr: string;
+  avgCpc: string;
+  conversions: number;
+  costPerConversion: string;
+  impressionShare: string;
+}
+
+export interface GoogleAdUnitRow {
+  id: string;
+  campaignName: string;
+  adName: string;
+  name: string;
+  status: CampaignStatus;
+  budget: string;
+  impressions: number;
+  clicks: number;
+  ctr: string;
+  avgCpc: string;
+  conversions: number;
+  costPerConversion: string;
+  impressionShare: string;
+}
+
+export type TLDRSentiment = "positive" | "neutral" | "negative";
+
+export interface TLDRBullet {
+  id: string;
+  text: string;
+  sentiment: TLDRSentiment;
+}
+
+export interface TLDRContent {
+  summary: TLDRBullet[];
+  predictions: TLDRBullet[];
 }
 
 export interface DashboardData {
-  summary: KpiColumn[];
-  leadsKpi: {
-    title: string;
-    stages: LeadStage[];
-    source: DataSource;
+  overallStats: KpiMetric[];
+  leadsFunnel: LeadsFunnelData;
+  metaChart: MetaChartPoint[];
+  metaCampaigns: MetaCampaignRow[];
+  metaAdSets: MetaAdSetRow[];
+  metaAds: MetaAdRow[];
+  googleChart: GoogleChartPoint[];
+  googleCampaigns: GoogleCampaignRow[];
+  googleAds: GoogleAdRow[];
+  googleAdUnits: GoogleAdUnitRow[];
+  tldr: TLDRContent;
+  filters: {
+    platform: Platform;
+    dateRange: DateRange;
   };
-  netCostCpm: {
-    title: string;
-    points: ChartPoint[];
-    source: DataSource;
-  };
-  conversions: {
-    title: string;
-    metrics: KpiMetric[];
-    source: DataSource;
-  };
-  gaImpCycle: {
-    title: string;
-    subtitle: string;
-    points: ChartPoint[];
-    source: DataSource;
-  };
-  leftTabs: TabbedListData;
-  rightTabs: TabbedListData;
 }

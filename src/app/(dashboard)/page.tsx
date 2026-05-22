@@ -1,8 +1,5 @@
-import { DashboardView } from "@/components/dashboard/dashboard-view";
-import { getDashboardData } from "@/data/mocks";
+import { DashboardPageContent } from "@/components/dashboard/DashboardPageContent";
 
 export default function DashboardPage() {
-  const data = getDashboardData();
-
-  return <DashboardView data={data} />;
+  return <DashboardPageContent />;
 }

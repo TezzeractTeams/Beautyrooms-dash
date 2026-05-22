@@ -16,7 +16,12 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Beauty Rooms Clinic — Dashboard",
-  description: "Marketing and clinic performance dashboard",
+  description: "Marketing performance dashboard",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

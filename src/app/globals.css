@@ -26,6 +26,9 @@
   --warm-brown: 27 11% 37%;
   --surface: 60 20% 95%;
   --heading: 30 8% 16%;
+  --status-positive: 142 18% 42%;
+  --status-negative: 0 35% 48%;
+  --status-warning: 35 45% 48%;
   --sidebar-background: 60 33% 97%;
   --sidebar-foreground: 27 11% 37%;
   --sidebar-accent: 60 20% 94%;
@@ -54,7 +57,11 @@
   --color-warm-brown: hsl(var(--warm-brown));
   --color-surface: hsl(var(--surface));
   --color-heading: hsl(var(--heading));
+  --color-status-positive: hsl(var(--status-positive));
+  --color-status-negative: hsl(var(--status-negative));
+  --color-status-warning: hsl(var(--status-warning));
   --font-sans: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
   --radius-none: 0;
 }
 
@@ -69,4 +76,62 @@ textarea:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #fafaf5 inset !important;
   box-shadow: 0 0 0 1000px #fafaf5 inset !important;
   -webkit-text-fill-color: hsl(var(--charcoal)) !important;
+}
+
+@keyframes dashboard-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.dashboard-fade-up {
+  animation: dashboard-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--background) / 0.55),
+    transparent
+  );
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-fade-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .skeleton-shimmer::after {
+    animation: none;
+    display: none;
+  }
 }
