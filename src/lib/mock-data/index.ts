@@ -32,7 +32,7 @@ export function getDashboardData(
     googleCampaigns: getGoogleCampaigns(),
     googleAds: getGoogleAds(),
     googleAdUnits: getGoogleAdUnits(),
-    tldr: getTLDRContent(),
+    tldr: getTLDRContent(platform, dateRange),
     filters: { platform, dateRange },
   };
 }

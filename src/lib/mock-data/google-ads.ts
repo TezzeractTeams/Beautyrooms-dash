@@ -263,3 +263,7 @@ export function getGoogleAdUnits(): GoogleAdUnitRow[] {
 }
 
 export const GOOGLE_REPORT_PERIOD = { start: REPORT_START, end: REPORT_END };
+
+export function getGoogleAccountTotals() {
+  return { ...ACCOUNT_TOTALS };
+}

@@ -142,3 +142,22 @@ export function getMetaAds(): MetaAdRow[] {
 }
 
 export const META_REPORT_PERIOD = { start: REPORT_START, end: REPORT_END };
+
+export function getMetaAccountTotals() {
+  const active = META_CAMPAIGNS.filter((c) => c.status === "active");
+  const spend = active.reduce((sum, c) => sum + parseMoney(c.spend), 0);
+  const impressions = active.reduce((sum, c) => sum + c.impressions, 0);
+  const clicks = active.reduce((sum, c) => sum + c.clicks, 0);
+  return {
+    spend,
+    impressions,
+    clicks,
+    cpm: ACTIVE_CAMPAIGN_CPM,
+    activeCampaigns: active.length,
+    totalCampaigns: META_CAMPAIGNS.length,
+  };
+}
+
+function parseMoney(s: string): number {
+  return Number(s.replace(/[$,]/g, "")) || 0;
+}

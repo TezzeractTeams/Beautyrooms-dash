@@ -7,7 +7,6 @@ import { useCountUp } from "@/hooks/useCountUp";
 import { cn } from "@/lib/utils";
 import { SourceBadge } from "../shared/SourceBadge";
 import { TrendBadge, trendLabel } from "../shared/TrendBadge";
-import { SparklineStub } from "./SparklineStub";
 
 interface StatCardProps {
   metric: KpiMetric;
@@ -77,8 +76,6 @@ export function StatCard({
         />
         <span className="ml-2 font-sans text-xs text-[#888888]">vs prev. period</span>
       </div>
-
-      <SparklineStub metricId={metric.id} />
     </article>
   );
 }

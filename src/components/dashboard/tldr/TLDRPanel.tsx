@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshCw } from "lucide-react";
-import type { TLDRContent } from "@/types/dashboard";
-import { refreshTLDRContent } from "@/lib/mock-data/tldr-content";
+import { useDashboardFilters } from "@/contexts/dashboard-filters";
+import { getTLDRContent } from "@/lib/mock-data/tldr-content";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,16 +20,12 @@ import { TLDRBulletList } from "./TLDRBulletList";
 const PANEL_TOP = "10.75rem";
 const PANEL_HEIGHT = `calc(100vh - ${PANEL_TOP} - 2rem)`;
 
-interface TLDRPanelProps {
-  initialContent: TLDRContent;
-}
-
 function TLDRBody({
   content,
   fade,
   showPredictionPill,
 }: {
-  content: TLDRContent;
+  content: ReturnType<typeof getTLDRContent>;
   fade: boolean;
   showPredictionPill?: boolean;
 }) {
@@ -64,20 +60,29 @@ function TLDRBody({
   );
 }
 
-export function TLDRPanel({ initialContent }: TLDRPanelProps) {
-  const [content, setContent] = useState(initialContent);
+export function TLDRPanel() {
+  const { platform, dateRange } = useDashboardFilters();
+  const generated = useMemo(
+    () => getTLDRContent(platform, dateRange),
+    [platform, dateRange.preset, dateRange.start, dateRange.end],
+  );
+  const [content, setContent] = useState(generated);
   const [refreshing, setRefreshing] = useState(false);
   const [fade, setFade] = useState(false);
+
+  useEffect(() => {
+    setContent(generated);
+  }, [generated]);
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
     setFade(true);
     window.setTimeout(() => {
-      setContent(refreshTLDRContent());
+      setContent(getTLDRContent(platform, dateRange));
       setFade(false);
       setRefreshing(false);
     }, 180);
-  }, []);
+  }, [platform, dateRange]);
 
   return (
     <>
@@ -138,7 +143,7 @@ function MobileTLDRSheet({
   refreshing,
   onRefresh,
 }: {
-  content: TLDRContent;
+  content: ReturnType<typeof getTLDRContent>;
   fade: boolean;
   refreshing: boolean;
   onRefresh: () => void;

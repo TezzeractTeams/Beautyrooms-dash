@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { getTLDRContent } from "@/lib/mock-data/tldr-content";
 import { GlobalFilterBar } from "./GlobalFilterBar";
 import { HeaderActions } from "./HeaderActions";
 import { TLDRPanel } from "./tldr/TLDRPanel";
@@ -9,8 +8,6 @@ interface DashboardShellProps {
 }
 
 export function DashboardShell({ children }: DashboardShellProps) {
-  const initialTldr = getTLDRContent();
-
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-30 border-b border-[rgba(232,232,227,0.5)] bg-background">
@@ -40,7 +37,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
 
       <div className="flex items-start gap-0 px-4 py-6 sm:px-6 sm:py-8 lg:gap-8 lg:px-8 lg:py-10">
         <main className="min-w-0 flex-1 pb-20 sm:pb-24 xl:pb-0">{children}</main>
-        <TLDRPanel initialContent={initialTldr} />
+        <TLDRPanel />
       </div>
     </div>
   );
