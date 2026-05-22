@@ -5,171 +5,140 @@ import type {
   MetaCampaignRow,
   MetaChartPoint,
 } from "@/types/dashboard";
-import { dateRangeMultiplier, getChartDates } from "./utils";
+
+/** Meta — BeautyRoomsClinic Campaigns (May 15–22, 2026) */
+const REPORT_START = "2026-05-15";
+const REPORT_END = "2026-05-22";
+const REPORT_DAYS = [
+  "2026-05-15",
+  "2026-05-16",
+  "2026-05-17",
+  "2026-05-18",
+  "2026-05-19",
+  "2026-05-20",
+  "2026-05-21",
+  "2026-05-22",
+];
+
+const ACTIVE_CAMPAIGN_SPEND = 28.06;
+const ACTIVE_CAMPAIGN_CPM = 14.43;
+
+function mapDelivery(delivery: string): MetaCampaignRow["status"] {
+  return delivery === "active" ? "active" : "paused";
+}
+
+const META_CAMPAIGNS: MetaCampaignRow[] = [
+  {
+    id: "mc-brc-traffic",
+    name: "BRC Traffic - IG/FB",
+    status: mapDelivery("inactive"),
+    budget: "Ad set budget",
+    spend: "$0.00",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    cpc: "$0.00",
+    conversions: 0,
+    roas: "—",
+  },
+  {
+    id: "mc-fp-headspa",
+    name: "FP - HeadSpa Detox - Sales",
+    status: mapDelivery("inactive"),
+    budget: "$15/day",
+    spend: "$0.00",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    cpc: "$0.00",
+    conversions: 0,
+    roas: "—",
+  },
+  {
+    id: "mc-fp-nano-brows",
+    name: "FP - Nano Brows - 15 Mins Call",
+    status: mapDelivery("inactive"),
+    budget: "$21/day",
+    spend: "$0.00",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    cpc: "$0.00",
+    conversions: 0,
+    roas: "—",
+  },
+  {
+    id: "mc-md-headspa-copy",
+    name: "Mothers Day - HeadSpa Detox - Sales - Copy",
+    status: mapDelivery("inactive"),
+    budget: "$15/day",
+    spend: "$0.00",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    cpc: "$0.00",
+    conversions: 0,
+    roas: "—",
+  },
+  {
+    id: "mc-md-headspa-copy2",
+    name: "Mothers Day - HeadSpa Detox - Sales - Copy 2",
+    status: mapDelivery("inactive"),
+    budget: "Ad set budget",
+    spend: "$0.00",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    cpc: "$0.00",
+    conversions: 0,
+    roas: "—",
+  },
+  {
+    id: "mc-head-spa-135",
+    name: "Head Spa Detox $135",
+    status: "active",
+    budget: "$30/day",
+    spend: "$28.06",
+    impressions: 1944,
+    clicks: 44,
+    ctr: "4.22%",
+    cpc: "$0.34",
+    conversions: 0,
+    roas: "—",
+  },
+];
+
+function distributeDaily(total: number, days: number): number[] {
+  const perDay = total / days;
+  const values = Array.from({ length: days }, () => Math.floor(perDay * 100) / 100);
+  const sum = values.reduce((a, b) => a + b, 0);
+  values[values.length - 1] = Math.round((total - sum + values[values.length - 1]) * 100) / 100;
+  return values;
+}
 
 export function getMetaChartData(
   _platform: "facebook" | "instagram" | "combined" = "combined",
-  dateRange: DateRange = { preset: "30d" },
+  _dateRange: DateRange = { preset: "30d" },
 ): MetaChartPoint[] {
-  const mult = dateRangeMultiplier(dateRange);
+  const dailyCost = distributeDaily(ACTIVE_CAMPAIGN_SPEND, REPORT_DAYS.length);
 
-  return getChartDates(dateRange).map((date, i) => ({
+  return REPORT_DAYS.map((date, i) => ({
     date,
-    cost: Math.round((280 + Math.sin(i / 3) * 60 + i * 8) * mult * 10) / 10,
-    cpm: Math.round((6.8 + Math.cos(i / 4) * 1.2 + i * 0.05) * 100) / 100,
+    cost: dailyCost[i],
+    cpm: ACTIVE_CAMPAIGN_CPM,
   }));
 }
 
 export function getMetaCampaigns(): MetaCampaignRow[] {
-  return [
-    {
-      id: "mc-1",
-      name: "Spring Facial Promo",
-      status: "active",
-      budget: "$1,500/wk",
-      spend: "$4,820",
-      impressions: 98200,
-      clicks: 2410,
-      ctr: "2.45%",
-      cpc: "$2.00",
-      conversions: 18,
-      roas: "3.2x",
-    },
-    {
-      id: "mc-2",
-      name: "Botox Awareness",
-      status: "active",
-      budget: "$1,200/wk",
-      spend: "$3,940",
-      impressions: 76400,
-      clicks: 1380,
-      ctr: "1.81%",
-      cpc: "$2.86",
-      conversions: 11,
-      roas: "2.4x",
-    },
-    {
-      id: "mc-3",
-      name: "Retargeting — Site Visitors",
-      status: "active",
-      budget: "$800/wk",
-      spend: "$2,180",
-      impressions: 42100,
-      clicks: 1290,
-      ctr: "3.06%",
-      cpc: "$1.69",
-      conversions: 14,
-      roas: "4.1x",
-    },
-    {
-      id: "mc-4",
-      name: "Lash Extensions — Lookalike",
-      status: "paused",
-      budget: "$600/wk",
-      spend: "$1,420",
-      impressions: 31800,
-      clicks: 620,
-      ctr: "1.95%",
-      cpc: "$2.29",
-      conversions: 5,
-      roas: "1.8x",
-    },
-    {
-      id: "mc-5",
-      name: "Head Spa Launch",
-      status: "ended",
-      budget: "$500/wk",
-      spend: "$980",
-      impressions: 22400,
-      clicks: 410,
-      ctr: "1.83%",
-      cpc: "$2.39",
-      conversions: 3,
-      roas: "1.5x",
-    },
-  ];
+  return META_CAMPAIGNS;
 }
 
 export function getMetaAdSets(): MetaAdSetRow[] {
-  const campaigns = getMetaCampaigns();
-  const sets: MetaAdSetRow[] = [];
-  const names = [
-    "Lookalike — Clients 1%",
-    "Interest — Skincare 25–54",
-    "Broad — Local 15mi",
-    "Retargeting 7-day",
-    "Retargeting 30-day",
-    "IG Stories Placements",
-    "FB Feed Placements",
-    "Women 28–55",
-    "Engagement Custom Audience",
-    "Video Viewers 50%",
-  ];
-
-  campaigns.forEach((c, ci) => {
-    const count = ci < 2 ? 3 : ci < 4 ? 2 : 1;
-    for (let i = 0; i < count; i++) {
-      const idx = sets.length;
-      sets.push({
-        id: `mas-${idx + 1}`,
-        campaignName: c.name,
-        name: names[idx % names.length],
-        status: c.status === "ended" ? "ended" : i === 0 ? "active" : "paused",
-        budget: "$400/wk",
-        spend: formatSpend(400 + idx * 120),
-        impressions: 12000 + idx * 2500,
-        clicks: 280 + idx * 40,
-        ctr: `${(1.8 + (idx % 5) * 0.2).toFixed(2)}%`,
-        cpc: `$${(1.6 + (idx % 4) * 0.3).toFixed(2)}`,
-        conversions: 2 + (idx % 4),
-        roas: `${(2 + (idx % 3) * 0.5).toFixed(1)}x`,
-      });
-    }
-  });
-
-  return sets.slice(0, 10);
+  return [];
 }
 
 export function getMetaAds(): MetaAdRow[] {
-  const adSets = getMetaAdSets();
-  const adNames = [
-    "Video — Welcome Offer",
-    "Carousel — Core Services",
-    "Static — Book Now",
-    "UGC Testimonial",
-    "Before/After Gallery",
-    "Stories — Promo Code",
-    "Reels — Head Spa",
-    "Collection — PMU",
-  ];
-
-  const ads: MetaAdRow[] = [];
-  adSets.forEach((set, si) => {
-    const count = si < 6 ? 2 : 1;
-    for (let i = 0; i < count; i++) {
-      const idx = ads.length;
-      if (idx >= 20) return;
-      ads.push({
-        id: `mad-${idx + 1}`,
-        campaignName: set.campaignName,
-        adSetName: set.name,
-        name: adNames[idx % adNames.length],
-        status: set.status,
-        budget: "$200/wk",
-        spend: formatSpend(180 + idx * 45),
-        impressions: 5000 + idx * 800,
-        clicks: 110 + idx * 18,
-        ctr: `${(2 + (idx % 4) * 0.25).toFixed(2)}%`,
-        cpc: `$${(1.5 + (idx % 3) * 0.2).toFixed(2)}`,
-        conversions: 1 + (idx % 3),
-        roas: `${(2.2 + (idx % 2) * 0.4).toFixed(1)}x`,
-      });
-    }
-  });
-
-  return ads.slice(0, 20);
+  return [];
 }
 
-function formatSpend(n: number): string {
-  return `$${n.toLocaleString("en-US")}`;
-}
+export const META_REPORT_PERIOD = { start: REPORT_START, end: REPORT_END };

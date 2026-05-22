@@ -5,165 +5,261 @@ import type {
   GoogleCampaignRow,
   GoogleChartPoint,
 } from "@/types/dashboard";
-import { dateRangeMultiplier, getChartDates } from "./utils";
 
-export function getGoogleChartData(
-  dateRange: DateRange = { preset: "30d" },
-): GoogleChartPoint[] {
-  const mult = dateRangeMultiplier(dateRange);
+/** Google Ads — Ad report (May 15–21, 2026) */
+const REPORT_START = "2026-05-15";
+const REPORT_END = "2026-05-21";
+const REPORT_DAYS = ["2026-05-15", "2026-05-16", "2026-05-17", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21"];
 
-  return getChartDates(dateRange).map((date, i) => ({
+const ACCOUNT_TOTALS = {
+  cost: 22.47,
+  impressions: 205,
+  clicks: 7,
+  conversions: 4,
+  ctr: "3.41%",
+  avgCpc: "$3.21",
+  costPerConversion: "$5.62",
+  impressionShareTop: "66.67%",
+};
+
+const GOOGLE_CAMPAIGNS: GoogleCampaignRow[] = [
+  {
+    id: "gc-head-spa-traffic",
+    name: "Head Spa Traffic",
+    status: "active",
+    budget: "—",
+    impressions: 17,
+    clicks: 1,
+    ctr: "5.88%",
+    avgCpc: "$2.28",
+    conversions: 1.5,
+    costPerConversion: "$1.52",
+    impressionShare: "50.00%",
+  },
+  {
+    id: "gc-mothers-day-traffic",
+    name: "Mothers Day Traffic",
+    status: "paused",
+    budget: "—",
+    impressions: 186,
+    clicks: 6,
+    ctr: "3.23%",
+    avgCpc: "$3.36",
+    conversions: 2.5,
+    costPerConversion: "$8.08",
+    impressionShare: "69.70%",
+  },
+  {
+    id: "gc-nano-brows",
+    name: "Nano Brwos - Sales-Search",
+    status: "paused",
+    budget: "—",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    avgCpc: "$0.00",
+    conversions: 0,
+    costPerConversion: "$0.00",
+    impressionShare: "—",
+  },
+  {
+    id: "gc-brc-head-spa-detox",
+    name: "BRC - Sales - Head Spa Detox",
+    status: "paused",
+    budget: "—",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    avgCpc: "$0.00",
+    conversions: 0,
+    costPerConversion: "$0.00",
+    impressionShare: "—",
+  },
+];
+
+const GOOGLE_ADS: GoogleAdRow[] = [
+  {
+    id: "ga-head-spa-traffic",
+    campaignName: "Head Spa Traffic",
+    name: "Head Spa Traffic Ad group Updated Keywords",
+    status: "active",
+    budget: "—",
+    impressions: 17,
+    clicks: 1,
+    ctr: "5.88%",
+    avgCpc: "$2.28",
+    conversions: 1.5,
+    costPerConversion: "$1.52",
+    impressionShare: "50.00%",
+  },
+  {
+    id: "ga-mothers-day-traffic",
+    campaignName: "Mothers Day Traffic",
+    name: "Traffic Ad group Common Keywords",
+    status: "paused",
+    budget: "—",
+    impressions: 186,
+    clicks: 6,
+    ctr: "3.23%",
+    avgCpc: "$3.36",
+    conversions: 2.5,
+    costPerConversion: "$8.08",
+    impressionShare: "69.70%",
+  },
+  {
+    id: "ga-nano-brows",
+    campaignName: "Nano Brwos - Sales-Search",
+    name: "Ad group 1",
+    status: "paused",
+    budget: "—",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    avgCpc: "$0.00",
+    conversions: 0,
+    costPerConversion: "$0.00",
+    impressionShare: "—",
+  },
+  {
+    id: "ga-brc-head-spa",
+    campaignName: "BRC - Sales - Head Spa Detox",
+    name: "Ad group 1",
+    status: "paused",
+    budget: "—",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    avgCpc: "$0.00",
+    conversions: 0,
+    costPerConversion: "$0.00",
+    impressionShare: "—",
+  },
+];
+
+const GOOGLE_AD_UNITS: GoogleAdUnitRow[] = [
+  {
+    id: "gau-1",
+    campaignName: "Head Spa Traffic",
+    adName: "Head Spa Traffic Ad group Updated Keywords",
+    name: "Need A Reset This Week?",
+    status: "active",
+    budget: "—",
+    impressions: 17,
+    clicks: 1,
+    ctr: "5.88%",
+    avgCpc: "$2.28",
+    conversions: 1.5,
+    costPerConversion: "$1.52",
+    impressionShare: "50.00%",
+  },
+  {
+    id: "gau-2",
+    campaignName: "Mothers Day Traffic",
+    adName: "Traffic Ad group Common Keywords",
+    name: "Need A Reset This Week?",
+    status: "paused",
+    budget: "—",
+    impressions: 186,
+    clicks: 6,
+    ctr: "3.23%",
+    avgCpc: "$3.36",
+    conversions: 2.5,
+    costPerConversion: "$8.08",
+    impressionShare: "69.70%",
+  },
+  {
+    id: "gau-3",
+    campaignName: "Nano Brwos - Sales-Search",
+    adName: "Ad group 1",
+    name: "Save 20% on Nano Brows",
+    status: "paused",
+    budget: "—",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    avgCpc: "$0.00",
+    conversions: 0,
+    costPerConversion: "$0.00",
+    impressionShare: "—",
+  },
+  {
+    id: "gau-4",
+    campaignName: "Mothers Day Traffic",
+    adName: "Traffic Ad group Common Keywords",
+    name: "20% Off Mother’s Day Offer",
+    status: "paused",
+    budget: "—",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    avgCpc: "$0.00",
+    conversions: 0,
+    costPerConversion: "$0.00",
+    impressionShare: "—",
+  },
+  {
+    id: "gau-5",
+    campaignName: "BRC - Sales - Head Spa Detox",
+    adName: "Ad group 1",
+    name: "Save $35 on Scalp Detox",
+    status: "paused",
+    budget: "—",
+    impressions: 0,
+    clicks: 0,
+    ctr: "—",
+    avgCpc: "$0.00",
+    conversions: 0,
+    costPerConversion: "$0.00",
+    impressionShare: "—",
+  },
+  {
+    id: "gau-6",
+    campaignName: "Mothers Day Traffic",
+    adName: "Traffic Ad group Common Keywords",
+    name: "20% Off for Mother’s Day",
+    status: "paused",
+    budget: "—",
+    impressions: 2,
+    clicks: 0,
+    ctr: "0.00%",
+    avgCpc: "$0.00",
+    conversions: 0,
+    costPerConversion: "$0.00",
+    impressionShare: "—",
+  },
+];
+
+function distributeDaily(total: number, days: number): number[] {
+  const perDay = total / days;
+  const values = Array.from({ length: days }, () => Math.floor(perDay * 100) / 100);
+  const sum = values.reduce((a, b) => a + b, 0);
+  values[values.length - 1] = Math.round((total - sum + values[values.length - 1]) * 100) / 100;
+  return values;
+}
+
+export function getGoogleChartData(_dateRange: DateRange = { preset: "30d" }): GoogleChartPoint[] {
+  const dailyCost = distributeDaily(ACCOUNT_TOTALS.cost, REPORT_DAYS.length);
+  const dailyImpressions = distributeDaily(ACCOUNT_TOTALS.impressions, REPORT_DAYS.length);
+  const dailyClicks = distributeDaily(ACCOUNT_TOTALS.clicks, REPORT_DAYS.length);
+
+  return REPORT_DAYS.map((date, i) => ({
     date,
-    cost: Math.round((190 + Math.sin(i / 2.5) * 35 + i * 5) * mult * 10) / 10,
-    impressions: Math.round((8200 + Math.cos(i / 3) * 1200 + i * 180) * mult),
-    clicks: Math.round((38 + Math.sin(i / 4) * 8 + i * 1.2) * mult),
+    cost: dailyCost[i],
+    impressions: Math.round(dailyImpressions[i]),
+    clicks: Math.round(dailyClicks[i]),
   }));
 }
 
 export function getGoogleCampaigns(): GoogleCampaignRow[] {
-  return [
-    {
-      id: "gc-1",
-      name: "Brand — Beauty Rooms",
-      status: "active",
-      budget: "$120/day",
-      impressions: 45200,
-      clicks: 1890,
-      ctr: "4.18%",
-      avgCpc: "$1.42",
-      conversions: 22,
-      costPerConversion: "$121.55",
-      impressionShare: "89%",
-    },
-    {
-      id: "gc-2",
-      name: "Non-brand — Facials",
-      status: "active",
-      budget: "$85/day",
-      impressions: 38400,
-      clicks: 1120,
-      ctr: "2.92%",
-      avgCpc: "$2.18",
-      conversions: 14,
-      costPerConversion: "$174.29",
-      impressionShare: "62%",
-    },
-    {
-      id: "gc-3",
-      name: "Non-brand — Injectables",
-      status: "active",
-      budget: "$70/day",
-      impressions: 29100,
-      clicks: 780,
-      ctr: "2.68%",
-      avgCpc: "$2.54",
-      conversions: 9,
-      costPerConversion: "$219.78",
-      impressionShare: "48%",
-    },
-    {
-      id: "gc-4",
-      name: "Remarketing — All Visitors",
-      status: "paused",
-      budget: "$45/day",
-      impressions: 16800,
-      clicks: 520,
-      ctr: "3.10%",
-      avgCpc: "$1.89",
-      conversions: 8,
-      costPerConversion: "$122.81",
-      impressionShare: "71%",
-    },
-    {
-      id: "gc-5",
-      name: "Promo — Spring Package",
-      status: "ended",
-      budget: "$40/day",
-      impressions: 12400,
-      clicks: 310,
-      ctr: "2.50%",
-      avgCpc: "$2.71",
-      conversions: 4,
-      costPerConversion: "$210.25",
-      impressionShare: "35%",
-    },
-  ];
+  return GOOGLE_CAMPAIGNS;
 }
 
 export function getGoogleAds(): GoogleAdRow[] {
-  const campaigns = getGoogleCampaigns();
-  const ads: GoogleAdRow[] = [];
-  const names = [
-    "RSA — Core Services",
-    "RSA — Promotions",
-    "RSA — Location Extensions",
-    "Display — Remarketing Banner",
-    "Performance Max — Feed",
-    "RSA — PMU Specialist",
-    "RSA — Head Spa",
-    "Call-only — Book Now",
-    "RSA — Lash Menu",
-    "RSA — Seasonal Offer",
-  ];
-
-  campaigns.forEach((c, ci) => {
-    const count = ci < 3 ? 2 : 1;
-    for (let i = 0; i < count; i++) {
-      const idx = ads.length;
-      if (idx >= 10) return;
-      ads.push({
-        id: `ga-${idx + 1}`,
-        campaignName: c.name,
-        name: names[idx],
-        status: c.status,
-        budget: "$50/day",
-        impressions: 8000 + idx * 1200,
-        clicks: 240 + idx * 35,
-        ctr: `${(2.8 + (idx % 3) * 0.4).toFixed(2)}%`,
-        avgCpc: `$${(1.6 + (idx % 4) * 0.25).toFixed(2)}`,
-        conversions: 3 + (idx % 4),
-        costPerConversion: `$${(140 + idx * 18).toFixed(2)}`,
-        impressionShare: `${55 + (idx % 4) * 8}%`,
-      });
-    }
-  });
-
-  return ads;
+  return GOOGLE_ADS;
 }
 
 export function getGoogleAdUnits(): GoogleAdUnitRow[] {
-  const ads = getGoogleAds();
-  const units: GoogleAdUnitRow[] = [];
-  const headlines = [
-    "Headline A — Book Today",
-    "Headline B — Limited Offer",
-    "Description — Expert Care",
-    "Responsive — Service Menu",
-    "Image — Treatment Room",
-  ];
-
-  ads.forEach((ad, ai) => {
-    const count = ai < 4 ? 3 : 2;
-    for (let i = 0; i < count; i++) {
-      const idx = units.length;
-      if (idx >= 20) return;
-      units.push({
-        id: `gau-${idx + 1}`,
-        campaignName: ad.campaignName,
-        adName: ad.name,
-        name: `${ad.name} / ${headlines[i % headlines.length]}`,
-        status: ad.status,
-        budget: "—",
-        impressions: 2000 + idx * 400,
-        clicks: 60 + idx * 12,
-        ctr: `${(2.5 + (idx % 3) * 0.3).toFixed(2)}%`,
-        avgCpc: `$${(1.7 + (idx % 2) * 0.15).toFixed(2)}`,
-        conversions: 1 + (idx % 2),
-        costPerConversion: `$${(130 + idx * 10).toFixed(2)}`,
-        impressionShare: `${50 + (idx % 5) * 6}%`,
-      });
-    }
-  });
-
-  return units.slice(0, 20);
+  return GOOGLE_AD_UNITS;
 }
+
+export const GOOGLE_REPORT_PERIOD = { start: REPORT_START, end: REPORT_END };

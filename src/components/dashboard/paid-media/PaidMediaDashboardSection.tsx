@@ -46,7 +46,7 @@ export function PaidMediaDashboardSection() {
       <section>
         <SectionHeader
           title="Paid media"
-          subtitle="Meta and Google performance"
+          subtitle="Google Ad report & Meta campaigns (May 15–22, 2026)"
         />
         <div className="border border-[rgba(103,92,83,0.08)] bg-surface p-8 text-center">
           <p className="font-sans text-base font-light text-[#2D2926]/65">
@@ -63,7 +63,7 @@ export function PaidMediaDashboardSection() {
       <section>
         <SectionHeader
           title="Paid media"
-          subtitle="Meta and Google performance"
+          subtitle="Google Ad report & Meta campaigns (May 15–22, 2026)"
         />
         <div
           className={

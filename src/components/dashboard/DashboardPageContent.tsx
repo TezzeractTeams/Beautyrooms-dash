@@ -1,6 +1,5 @@
 "use client";
 
-import { LeadsFunnelSection } from "@/components/dashboard/leads-funnel/LeadsFunnelSection";
 import { PaidMediaDashboardSection } from "@/components/dashboard/paid-media/PaidMediaDashboardSection";
 import { OverallStatsSection } from "@/components/dashboard/overall-stats/OverallStatsSection";
 import { AnimatedEnter } from "@/components/dashboard/shared/AnimatedEnter";
@@ -12,9 +11,6 @@ export function DashboardPageContent() {
         <OverallStatsSection />
       </AnimatedEnter>
       <AnimatedEnter delay={70}>
-        <LeadsFunnelSection />
-      </AnimatedEnter>
-      <AnimatedEnter delay={140}>
         <PaidMediaDashboardSection />
       </AnimatedEnter>
     </div>

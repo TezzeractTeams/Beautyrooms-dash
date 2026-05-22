@@ -15,10 +15,6 @@ export interface DashboardFilters {
   dateRange?: DateRange;
 }
 
-/**
- * Single entry point for the dashboard page.
- * Replace with parallel API calls (Meta, Google, HubSpot, Boulevard) in a later phase.
- */
 export function getDashboardData(
   filters: DashboardFilters = {},
 ): DashboardData {

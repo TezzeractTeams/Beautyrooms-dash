@@ -48,15 +48,17 @@ function TLDRBody({
           <TLDRBulletList bullets={content.summary} />
         </div>
 
-        <div className="border-t border-border pt-4">
-          <p className="mb-3 font-sans text-[11px] tracking-[0.12em] uppercase text-[#888888]">
-            Predictions
-          </p>
-          <TLDRBulletList
-            bullets={content.predictions}
-            showPredictionPill={showPredictionPill}
-          />
-        </div>
+        {content.predictions.length > 0 ? (
+          <div className="border-t border-border pt-4">
+            <p className="mb-3 font-sans text-[11px] tracking-[0.12em] uppercase text-[#888888]">
+              Predictions
+            </p>
+            <TLDRBulletList
+              bullets={content.predictions}
+              showPredictionPill={showPredictionPill}
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ export function OverallStatsSection() {
     <section>
       <SectionHeader
         title="Overall Stats"
-        subtitle="High-level KPIs across Meta, Google, and clinic conversions"
+        subtitle="KPIs from Google Ad report & Meta campaigns (May 15–22, 2026)"
       />
       <FilterableSection skeletonVariant="stats">
         <StatsRow
