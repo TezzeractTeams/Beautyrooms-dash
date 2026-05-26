@@ -157,6 +157,29 @@ export interface TLDRContent {
   predictions: TLDRBullet[];
 }
 
+export interface BoulevardAppointmentRow {
+  id: string;
+  clientName: string;
+  /** ISO date "YYYY-MM-DD" from the first service's startAt */
+  date: string;
+  /** Comma-joined service names */
+  serviceNames: string;
+  /** Comma-joined unique category names */
+  categoryNames: string;
+  /** Total revenue in dollars (sum of service prices) */
+  totalRevenue: number;
+  /** Total duration in minutes (sum of service durations) */
+  totalDurationMin: number;
+  staffName: string;
+}
+
+export interface BoulevardKpis {
+  totalRevenue: number;
+  totalAppointments: number;
+  avgRevenue: number;
+  totalServices: number;
+}
+
 export interface DashboardData {
   overallStats: KpiMetric[];
   leadsFunnel: LeadsFunnelData;

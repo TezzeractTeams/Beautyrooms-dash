@@ -62,7 +62,7 @@ export function SortableTable<T>({
   };
 
   return (
-    <div className="overflow-x-auto [-webkit-overflow-scrolling:touch]">
+    <div className="overflow-x-auto [-webkit-overflow-scrolling:touch] print:overflow-visible">
       <table className="w-full min-w-[640px] border-collapse text-left sm:min-w-[720px]">
         <thead>
           <tr className="border-b border-border bg-surface">

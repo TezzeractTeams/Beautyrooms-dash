@@ -1,14 +1,9 @@
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
-import { DashboardFiltersProvider } from "@/contexts/dashboard-filters";
+import { DashboardClientLayout } from "@/components/dashboard/DashboardClientLayout";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <DashboardFiltersProvider>
-      <DashboardShell>{children}</DashboardShell>
-    </DashboardFiltersProvider>
-  );
+  return <DashboardClientLayout>{children}</DashboardClientLayout>;
 }

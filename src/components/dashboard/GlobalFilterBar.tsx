@@ -76,35 +76,26 @@ export function GlobalFilterBar() {
             Platform
           </span>
           <div className="flex flex-wrap gap-2">
-            {PLATFORM_PILLS.map((pill) => {
-              const isBoulevard = pill === "Boulevard";
-              return (
-                <button
-                  key={pill}
-                  type="button"
-                  disabled={isBoulevard}
-                  title={
-                    isBoulevard
-                      ? "Boulevard integration coming soon"
-                      : undefined
-                  }
-                  onClick={() => setPlatformLabel(pill)}
-                  className={cn(
-                    "inline-flex shrink-0 px-3 py-1.5 font-sans text-sm tracking-wide transition-colors",
-                    "border border-border",
-                    platformLabel === pill
-                      ? "bg-muted text-warm-brown"
-                      : "bg-background text-warm-brown/70 hover:bg-muted",
-                    isBoulevard && "cursor-not-allowed opacity-50",
-                  )}
-                >
-                  {pill}
-                </button>
-              );
-            })}
+            {PLATFORM_PILLS.map((pill) => (
+              <button
+                key={pill}
+                type="button"
+                onClick={() => setPlatformLabel(pill)}
+                className={cn(
+                  "inline-flex shrink-0 px-3 py-1.5 font-sans text-sm tracking-wide transition-colors",
+                  "border border-border",
+                  platformLabel === pill
+                    ? "bg-muted text-warm-brown"
+                    : "bg-background text-warm-brown/70 hover:bg-muted",
+                )}
+              >
+                {pill}
+              </button>
+            ))}
           </div>
         </div>
       </div>
     </div>
   );
 }
+

@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import type { GoogleChartPoint } from "@/types/dashboard";
 import { cn } from "@/lib/utils";
+import { usePrintDimensions } from "@/hooks/usePrintDimensions";
 
 type SeriesKey = "cost" | "impressions" | "clicks";
 
@@ -57,6 +58,7 @@ export function GoogleChart({ data, className }: GoogleChartProps) {
     impressions: true,
     clicks: true,
   });
+  const { width: rcWidth, height: rcHeight } = usePrintDimensions();
 
   const activeSeries = useMemo(
     () => SERIES.filter((s) => visible[s.key]),
@@ -107,8 +109,8 @@ export function GoogleChart({ data, className }: GoogleChartProps) {
         ))}
       </div>
 
-      <div className="h-[200px] w-full min-w-0 sm:h-[220px] md:h-[260px]">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="h-[200px] w-full min-w-0 sm:h-[220px] md:h-[260px] print:h-[240px]">
+        <ResponsiveContainer width={rcWidth} height={rcHeight}>
           <AreaChart
             key={activeSeries.map((s) => s.key).join("-")}
             data={data}

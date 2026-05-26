@@ -60,6 +60,7 @@ interface DashboardFiltersContextValue {
   setPlatformLabel: (label: PlatformLabel) => void;
   showMeta: boolean;
   showGoogle: boolean;
+  showBoulevard: boolean;
 }
 
 const DashboardFiltersContext =
@@ -122,7 +123,6 @@ export function DashboardFiltersProvider({
 
   const setPlatformLabel = useCallback(
     (label: PlatformLabel) => {
-      if (label === "Boulevard") return;
       setPlatformLabelState(label);
       startTransition(() => bumpLoading());
     },
@@ -131,6 +131,7 @@ export function DashboardFiltersProvider({
 
   const showMeta = platform === "all" || platform === "meta";
   const showGoogle = platform === "all" || platform === "google";
+  const showBoulevard = platform === "all" || platform === "boulevard";
 
   const value = useMemo(
     () => ({
@@ -148,6 +149,7 @@ export function DashboardFiltersProvider({
       setPlatformLabel,
       showMeta,
       showGoogle,
+      showBoulevard,
     }),
     [
       platform,
@@ -163,6 +165,7 @@ export function DashboardFiltersProvider({
       setPlatformLabel,
       showMeta,
       showGoogle,
+      showBoulevard,
     ],
   );
 

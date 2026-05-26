@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { useDashboardFilters } from "@/contexts/dashboard-filters";
-import { getTLDRContent } from "@/lib/mock-data/tldr-content";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,10 +13,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import type { TLDRContent } from "@/types/dashboard";
 import { TLDRBulletList } from "./TLDRBulletList";
+import { useTLDRContent } from "./useTLDRContent";
 
-/** Fixed below sticky header + filter bar */
-const PANEL_TOP = "10.75rem";
+/** Fixed below sticky header + global filter bar */
+const PANEL_TOP = "15.75rem";
 const PANEL_HEIGHT = `calc(100vh - ${PANEL_TOP} - 2rem)`;
 
 function TLDRBody({
@@ -25,7 +26,7 @@ function TLDRBody({
   fade,
   showPredictionPill,
 }: {
-  content: ReturnType<typeof getTLDRContent>;
+  content: TLDRContent;
   fade: boolean;
   showPredictionPill?: boolean;
 }) {
@@ -62,27 +63,19 @@ function TLDRBody({
 
 export function TLDRPanel() {
   const { platform, dateRange } = useDashboardFilters();
-  const generated = useMemo(
-    () => getTLDRContent(platform, dateRange),
-    [platform, dateRange.preset, dateRange.start, dateRange.end],
-  );
-  const [content, setContent] = useState(generated);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [fade, setFade] = useState(false);
+  const { content, loading } = useTLDRContent(platform, dateRange, refreshKey);
 
-  useEffect(() => {
-    setContent(generated);
-  }, [generated]);
-
-  const handleRefresh = useCallback(() => {
-    setRefreshing(true);
+  const handleRefresh = () => {
     setFade(true);
     window.setTimeout(() => {
-      setContent(getTLDRContent(platform, dateRange));
+      setRefreshKey((k) => k + 1);
       setFade(false);
-      setRefreshing(false);
     }, 180);
-  }, [platform, dateRange]);
+  };
+
+  const refreshing = loading;
 
   return (
     <>
@@ -121,7 +114,19 @@ export function TLDRPanel() {
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4">
-          <TLDRBody content={content} fade={fade} showPredictionPill />
+          {loading && content.summary.length === 0 ? (
+            <div className="space-y-3 pt-1">
+              {[100, 80, 90, 70, 85].map((w) => (
+                <div
+                  key={w}
+                  className="h-3 animate-pulse rounded bg-[rgba(103,92,83,0.1)]"
+                  style={{ width: `${w}%` }}
+                />
+              ))}
+            </div>
+          ) : (
+            <TLDRBody content={content} fade={fade} showPredictionPill />
+          )}
         </div>
       </div>
 
@@ -143,7 +148,7 @@ function MobileTLDRSheet({
   refreshing,
   onRefresh,
 }: {
-  content: ReturnType<typeof getTLDRContent>;
+  content: TLDRContent;
   fade: boolean;
   refreshing: boolean;
   onRefresh: () => void;

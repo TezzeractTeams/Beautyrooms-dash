@@ -14,6 +14,7 @@ export interface TablePanelConfig<T> {
   getRowKey: (row: T) => string;
   tableId: string;
   pinnedColumnIds?: string[];
+  emptyMessage?: string;
 }
 
 interface ResponsiveTablePanelProps<T extends string> {
@@ -50,6 +51,7 @@ export function ResponsiveTablePanel<T extends string>({
       getRowKey={activeConfig.getRowKey}
       onHideColumn={hideColumn}
       canHideColumn={canHide}
+      emptyMessage={activeConfig.emptyMessage}
     />
   );
 
@@ -71,7 +73,7 @@ export function ResponsiveTablePanel<T extends string>({
 
   return (
     <div className="border border-[rgba(103,92,83,0.08)] bg-surface">
-      <div className="hidden flex-wrap items-center justify-between gap-4 border-b border-border px-5 pt-4 md:flex">
+      <div className="hidden flex-wrap items-center justify-between gap-4 border-b border-border px-5 pt-4 md:flex print:flex">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-3">
           <TabGroup
             tabs={tabs}
@@ -83,11 +85,11 @@ export function ResponsiveTablePanel<T extends string>({
         </div>
         <SourceBadge source={source} className="mb-2 shrink-0" />
       </div>
-      <div className="hidden md:block" role="tabpanel">
+      <div className="hidden md:block print:block" role="tabpanel">
         {activeTable}
       </div>
 
-      <div className="md:hidden">
+      <div className="md:hidden print:hidden">
         <div className="flex flex-col gap-2 border-b border-border px-4 py-3">
           <div className="flex items-center justify-between">
             <span className="font-sans text-xs tracking-[0.12em] uppercase text-[#888888]">
@@ -123,6 +125,7 @@ function TabTableContent<T>({ config }: { config: TablePanelConfig<T> }) {
       getRowKey={config.getRowKey}
       onHideColumn={hideColumn}
       canHideColumn={canHide}
+      emptyMessage={config.emptyMessage}
     />
   );
 }

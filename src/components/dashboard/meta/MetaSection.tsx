@@ -54,18 +54,21 @@ export function MetaSection({
               columns: metaCampaignColumns,
               getRowKey: (r) => r.id,
               tableId: "meta-campaigns",
+              emptyMessage: "No campaigns found for this period.",
             },
             adSets: {
               rows: adSets,
               columns: metaAdSetColumns,
               getRowKey: (r) => r.id,
               tableId: "meta-ad-sets",
+              emptyMessage: "No ad sets found for this period.",
             },
             ads: {
               rows: ads,
               columns: metaAdColumns,
               getRowKey: (r) => r.id,
               tableId: "meta-ads",
+              emptyMessage: "No ads found for this period.",
             },
           }}
         />

@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import type { MetaChartPoint } from "@/types/dashboard";
 import { cn } from "@/lib/utils";
+import { usePrintDimensions } from "@/hooks/usePrintDimensions";
 
 type MetaPlacement = "facebook" | "instagram" | "combined";
 type MetricMode = "cost" | "cpm" | "both";
@@ -46,6 +47,7 @@ function scaleData(data: MetaChartPoint[], placement: MetaPlacement): MetaChartP
 export function MetaChart({ data, className }: MetaChartProps) {
   const [placement, setPlacement] = useState<MetaPlacement>("combined");
   const [metric, setMetric] = useState<MetricMode>("both");
+  const { width: rcWidth, height: rcHeight } = usePrintDimensions();
 
   const chartData = useMemo(() => scaleData(data, placement), [data, placement]);
 
@@ -104,8 +106,8 @@ export function MetaChart({ data, className }: MetaChartProps) {
         </div>
       </div>
 
-      <div className="h-[200px] w-full min-w-0 sm:h-[220px] md:h-[260px]">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="h-[200px] w-full min-w-0 sm:h-[220px] md:h-[260px] print:h-[240px]">
+        <ResponsiveContainer width={rcWidth} height={rcHeight}>
           <AreaChart
             key={`${placement}-${metric}`}
             data={chartData}

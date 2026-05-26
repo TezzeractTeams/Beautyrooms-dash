@@ -135,3 +135,58 @@ textarea:-webkit-autofill {
     display: none;
   }
 }
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Prevent animations from hiding content */
+  .dashboard-fade-up {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .skeleton-shimmer::after {
+    display: none;
+  }
+
+  /* Avoid splitting KPI cards, chart containers, and table panels */
+  article,
+  [data-chart],
+  [role="tabpanel"],
+  table {
+    break-inside: avoid;
+  }
+
+  /* Keep each major dashboard section together where possible */
+  section {
+    break-inside: avoid;
+  }
+
+  /* Start each top-level section on a new page */
+  .mx-auto > * + * {
+    break-before: page;
+  }
+
+  /* Prevent orphaned headings */
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  /* Remove shadows and outlines that don't render well in print */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Ensure the page uses full width */
+  body {
+    min-height: unset;
+  }
+}

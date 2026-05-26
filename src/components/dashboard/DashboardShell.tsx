@@ -1,7 +1,9 @@
 import Image from "next/image";
-import { GlobalFilterBar } from "./GlobalFilterBar";
+import { Suspense } from "react";
+import { AuthErrorBanner } from "@/components/auth/AuthErrorBanner";
+import { DashboardNav } from "./DashboardNav";
+import { DashboardRouteChrome } from "./DashboardRouteChrome";
 import { HeaderActions } from "./HeaderActions";
-import { TLDRPanel } from "./tldr/TLDRPanel";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -10,7 +12,7 @@ interface DashboardShellProps {
 export function DashboardShell({ children }: DashboardShellProps) {
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 border-b border-[rgba(232,232,227,0.5)] bg-background">
+      <header className="sticky top-0 z-30 border-b border-[rgba(232,232,227,0.5)] bg-background print:static print:border-b">
         <div className="flex flex-col gap-4 px-4 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:px-6 sm:py-5 lg:px-8">
           <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
             <Image
@@ -19,6 +21,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
               width={120}
               height={40}
               className="h-8 w-auto sm:h-10"
+              style={{ width: "auto", height: "auto" }}
               priority
             />
             <div className="min-w-0">
@@ -32,13 +35,18 @@ export function DashboardShell({ children }: DashboardShellProps) {
           </div>
           <HeaderActions className="w-full sm:w-auto" />
         </div>
-        <GlobalFilterBar />
+        <div className="print:hidden">
+          <DashboardNav />
+        </div>
       </header>
 
-      <div className="flex items-start gap-0 px-4 py-6 sm:px-6 sm:py-8 lg:gap-8 lg:px-8 lg:py-10">
-        <main className="min-w-0 flex-1 pb-20 sm:pb-24 xl:pb-0">{children}</main>
-        <TLDRPanel />
+      <div className="px-4 sm:px-6 lg:px-8">
+        <Suspense fallback={null}>
+          <AuthErrorBanner />
+        </Suspense>
       </div>
+
+      <DashboardRouteChrome>{children}</DashboardRouteChrome>
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Barlow, Cormorant_Garamond } from "next/font/google";
+import { AuthSessionProvider } from "@/components/providers/AuthSessionProvider";
+import { ClientOnly } from "@/components/shared/ClientOnly";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -30,8 +32,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${barlow.variable} ${cormorant.variable} h-full`}>
-      <body className="min-h-full font-sans antialiased">{children}</body>
+    <html
+      lang="en"
+      className={`${barlow.variable} ${cormorant.variable} h-full`}
+      suppressHydrationWarning
+    >
+      <body
+        className="min-h-full font-sans antialiased"
+        suppressHydrationWarning
+      >
+        <ClientOnly>
+          <AuthSessionProvider>{children}</AuthSessionProvider>
+        </ClientOnly>
+      </body>
     </html>
   );
 }
