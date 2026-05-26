@@ -11,7 +11,7 @@ function isPublicPath(pathname: string): boolean {
   return false;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(APP_SESSION_COOKIE)?.value;
   const isLoggedIn = await verifyAppSessionToken(token);

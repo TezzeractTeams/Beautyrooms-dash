@@ -28,6 +28,9 @@ function getAllowedDevOrigins(): string[] {
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: getAllowedDevOrigins(),
+  turbopack: {
+    root: import.meta.dirname,
+  },
 };
 
 export default nextConfig;

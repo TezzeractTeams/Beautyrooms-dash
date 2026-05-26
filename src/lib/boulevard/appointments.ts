@@ -176,7 +176,7 @@ export async function fetchBoulevardAppointments(
   let pages = 0;
 
   while (hasMore && pages < MAX_PAGES) {
-    const data = await boulevardGraphql<AppointmentsQueryResponse>(
+    const data: AppointmentsQueryResponse = await boulevardGraphql(
       APPOINTMENTS_QUERY,
       {
         locationId,
